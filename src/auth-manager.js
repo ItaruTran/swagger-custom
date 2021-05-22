@@ -25,7 +25,7 @@ export function getProfiles() {
         if (element)
             profiles.push({
                 value,
-                label: `🔒 ${value}`,
+                label: `🔐 ${value}`,
             })
         else
             profiles.push({

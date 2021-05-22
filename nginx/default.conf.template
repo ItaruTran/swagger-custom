@@ -1,0 +1,18 @@
+
+server {
+    listen 80;
+
+    include /app/conf.d/*
+
+    location /config.json {
+        root /app/setting;
+        try_files $uri =404;
+        break;
+    }
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html;
+        try_files $uri $uri/ /index.html;
+    }
+}

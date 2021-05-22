@@ -3,49 +3,16 @@ import "swagger-ui-react/swagger-ui.css"
 import React, { Component } from 'react';
 
 import CreatableSelect from 'react-select/creatable';
-import { getCurrentSpec, changeSpec, setManager, specs, updateAuthInfo, logout } from "./swagger-manager";
+import { getCurrentSpec, changeSpec, setManager, updateAuthInfo, logout } from "./swagger-manager";
 import { getAuthInfo, getCurrentProfile, getProfiles, saveAuthInfo } from "./auth-manager";
-
-class AppBar extends Component {
-  state = {
-    currentSpec: getCurrentSpec(),
-  }
-  changeSpec = (newValue, actionMeta) => {
-    const { value } = newValue
-    console.log(value);
-    changeSpec(value)
-
-    this.setState({
-      currentSpec: value,
-    })
-  };
-  handleInputChange = (inputValue, actionMeta) => {
-    console.group('Input Changed');
-    console.log(inputValue);
-    console.log(`action: ${actionMeta.action}`);
-    console.groupEnd();
-  };
-  componentDidMount() {
-  }
-  render() {
-    const { currentSpec } = this.state
-    return (
-      <CreatableSelect
-        onChange={this.changeSpec}
-        // onInputChange={this.handleInputChange}
-        options={specs}
-        defaultValue={currentSpec}
-      />
-    );
-  }
-}
-
 
 class App extends Component {
   state = {
-    currentSpec: getCurrentSpec(),
+    currentSpec: null,
     currentProfile: getCurrentProfile(),
     profiles: getProfiles(),
+    specs: null,
+    configError: null,
   }
 
   changeSpec = (newValue, _) => {
@@ -86,6 +53,7 @@ class App extends Component {
   }
 
   setup = (system) => {
+    console.log(system);
     const authorize = system.authActions.authorize
     system.authActions._oldAuthorize = authorize
     system.authActions.authorize = (payload) => {
@@ -106,15 +74,40 @@ class App extends Component {
       logout(payload)
     }
 
+    const updateUrl = system.specActions.updateUrl
+    system.specActions.updateUrl = (...data) => {
+      console.log(...data);
+      updateUrl(...data)
+    }
+
     setManager(system)
 
     updateAuthInfo(getAuthInfo(this.state.currentProfile))
   }
 
+  componentDidMount = () => {
+    fetch('/config.json')
+    .catch(configError => this.setState({ configError }))
+    .then(res => res.json())
+    .catch(configError => this.setState({ configError }))
+    .then(specs => {
+      this.setState({
+        specs,
+        currentSpec: getCurrentSpec(specs)
+      })
+    })
+  }
+
   render() {
-    const { currentSpec, currentProfile, profiles } = this.state
+    const { currentSpec, currentProfile, profiles, specs } = this.state
     const value = profiles.filter(v => v.value === currentProfile)[0]
-    console.log(this.state);
+
+    if (this.state.configError)
+      return <div>
+        {this.state.configError.toString()}
+      </div>
+    if (!specs)
+      return <div></div>
 
     return <div>
       <div>
@@ -148,6 +141,8 @@ class App extends Component {
       <SwaggerUI
         onComplete={this.setup}
         url={currentSpec.value}
+        deepLinking
+        docExpansion="none"
       />
       </div>
   }
