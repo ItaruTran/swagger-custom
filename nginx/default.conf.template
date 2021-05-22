@@ -2,7 +2,7 @@
 server {
     listen 80;
 
-    include /app/conf.d/*
+    include /app/conf.d/*;
 
     location /config.json {
         root /app/setting;
