@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+    docs:
+        image: ghcr.io/itarutran/swagger-custom:latest
+        ports:
+        - 8080:80
+        volumes:
+        - /home/pi/nginx:/app

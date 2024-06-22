@@ -5,6 +5,7 @@ const data = localStorage.getItem(key)
 const storage = data ? JSON.parse(data) : {Default: null}
 
 export function saveAuthInfo(profile, payload) {
+    console.log('saveAuthInfo',{ profile, payload });
     storage[profile] = payload
 
     localStorage.setItem(key, JSON.stringify(storage))

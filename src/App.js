@@ -36,8 +36,8 @@ class App extends Component {
     })
   }
   addNewProfile = (inputValue, actionMeta) => {
-    console.log('addNewProfile', inputValue, actionMeta);
-    if (actionMeta.action !== "set-value") {
+    console.log('addNewProfile', {inputValue, actionMeta});
+    if (actionMeta.action !== "set-value" && inputValue.length !== 0) {
       this._newProfile = inputValue
       return
     } else if (!this._newProfile)
@@ -57,6 +57,8 @@ class App extends Component {
     const authorize = system.authActions.authorize
     system.authActions._oldAuthorize = authorize
     system.authActions.authorize = (payload) => {
+      if (!payload) return
+      console.log('add new auth');
       this.setState({
         profiles: saveAuthInfo(this.state.currentProfile, payload),
       })
@@ -67,6 +69,7 @@ class App extends Component {
     const logout = system.authActions.logout
     system.authActions._oldLogout = logout
     system.authActions.logout = (payload) => {
+      console.log('remove auth');
       this.setState({
         profiles: saveAuthInfo(this.state.currentProfile, null),
       })
@@ -82,6 +85,7 @@ class App extends Component {
 
     setManager(system)
 
+    console.log('auto add current auth');
     updateAuthInfo(getAuthInfo(this.state.currentProfile))
   }
 

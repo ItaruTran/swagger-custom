@@ -1,0 +1,30 @@
+[
+  {
+    "label": "Okuro service dev",
+    "value": "https://api.dev.okuro.vn/openapi.json?access_token=okuRo123456"
+  },
+  {
+    "label": "Okuro service staging",
+    "value": "https://api-staging.okuro.vn/openapi.json?access_token=okuRo123456"
+  },
+  {
+    "label": "Okuro chat dev",
+    "value": "https://chat-api.dev.okuro.vn/openapi.json?access_token=okuRo123456"
+  },
+  {
+    "label": "Okuro chat staging",
+    "value": "https://chat-api-staging.okuro.vn/openapi.json?access_token=okuRo123456"
+  },
+  {
+    "label": "Okuro tag dev",
+    "value": "https://tag-sv.dev.okuro.vn/openapi.json?access_token=okuRo123456"
+  },
+  {
+    "label": "Okuro service local",
+    "value": "http://127.0.0.1:8000/openapi.json?access_token=okuRo123456"
+  },
+  {
+    "label": "Okuro chat local",
+    "value": "http://127.0.0.1:3000/openapi.json?access_token=okuRo123456"
+  }
+]

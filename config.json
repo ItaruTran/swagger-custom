@@ -1,0 +1,10 @@
+[
+    {
+        "label": "Okuro service",
+        "value": "https: //api.dev.okuro.vn/openapi.json"
+    },
+    {
+        "label": "Chat service",
+        "value": "https: //coronavirus-tg-api.herokuapp.com/openapi.json"
+    }
+]
